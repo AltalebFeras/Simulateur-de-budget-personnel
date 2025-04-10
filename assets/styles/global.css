@@ -23,6 +23,11 @@ body {
     line-height: 1.6;
 }
 
+.darkMode {
+    background-color: black;
+    color: white;
+}
+
 main {
     flex: 1;
     display: flex;
@@ -91,16 +96,24 @@ p {
 
 /* header and navbar */
 header {
-    border-bottom: 1px solid green ;
+
+    border-bottom: 1px solid green;
     margin-bottom: 20px;
 }
 
 .navbar {
+    background: #283c86;
+    background: -webkit-linear-gradient(to right, #45a247, #283c86);
+    background: linear-gradient(to right, #45a247, #283c86);
     background-color: white;
     color: white;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    li {
+        list-style: none;
+    }
 }
 
 .nav-links {
@@ -114,7 +127,7 @@ header {
 
 /* General classes for button and link for tags button and a */
 .btn {
-    background-color: blueviolet;
+    background-color: rgb(1, 225, 255);
     color: white;
     cursor: pointer;
     border: none;
@@ -125,6 +138,24 @@ header {
 
 .btn:hover {
     background-color: burlywood;
+}
+
+.btnDark {
+    background: #283c86;
+    background: -webkit-linear-gradient(to right, #45a247, #283c86);
+    background: linear-gradient(to right, #45a247, #283c86);
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+
+}
+
+.btnDark:hover {
+    background: #283c86;
+    background: -webkit-linear-gradient(to left, #45a247, #283c86);
+    background: linear-gradient(to left, #45a247, #283c86);
 }
 
 .link {
@@ -149,6 +180,7 @@ label {
 
 input[type="text"],
 input[type="email"],
+input[type="number"],
 input[type="password"] {
     border: 1px solid black;
     border-radius: 5px;
@@ -157,11 +189,20 @@ input[type="password"] {
     margin: 10px;
 }
 
-input[type="checkbox"], input[type="radio"], input[type="radio"]:checked, input[type="checkbox"]:checked {
+input[type="checkbox"],
+input[type="radio"],
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
     margin: 0;
     accent-color: black;
     min-width: 24px;
     min-height: 24px;
+}
+
+label {
+    font-weight: 700;
+    margin: 10px;
+
 }
 
 select {
@@ -201,10 +242,10 @@ input[type="submit"] {
 /* footer style */
 
 footer {
-    background: #283c86;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #45a247, #283c86);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #45a247, #283c86); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
+    background: #283c86;
+    background: -webkit-linear-gradient(to right, #45a247, #283c86);
+    background: linear-gradient(to right, #45a247, #283c86);
+
     color: white;
     padding: 20px 0;
     text-align: center;

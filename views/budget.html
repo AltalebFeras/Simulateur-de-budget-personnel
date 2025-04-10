@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mon Budget</title>
     <link rel="stylesheet" href="./../assets/styles/global.css" />
+    <link rel="stylesheet" href="./../assets/styles/budget.css" />
+    <script src="./../assets/scripts/script.js" defer></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -12,6 +14,9 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <!-- lib js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
   </head>
   <body>
     <!-- section header -->
@@ -29,7 +34,7 @@
           <p class="logo_paragraph">MonBudget</p>
         </div>
         <ul class="nav-links">
-          <li><a class="link" href="./../index.html">Accueil</a></li>
+          <button id="toggleDark" class="btnDark">🌙</button>
         </ul>
       </nav>
     </header>
@@ -38,7 +43,91 @@
       <div class="container">
         <div class="hero-content">
           <h1>Bienvenue sur MonBudget</h1>
-          <p>Gérez vos finances facilement et efficacement.</p>
+          <div class="flex_row">
+            <p>Gérez vos finances facilement et efficacement.</p>
+            <a class="btn" href="./../index.html">Retourner</a>
+          </div>
+          <div class="history"></div>
+          <div class="flex_row">
+            <form class="card formRevnus" action="#">
+              <h3>
+                Ajouter un revenu pour le <span class="selectedMonth"></span>
+              </h3>
+              <div>
+                <label for="montant">Montant :</label>
+                <input type="number" id="montant" name="montant" required />
+              </div>
+              <div>
+                <label for="categorie">Catégorie :</label>
+                <select id="categorie" name="categorie" required>
+                  <option value="salaire">Salaire</option>
+                  <option value="pensions">Pensions</option>
+                  <option value="allocations_sociales">
+                    Allocations sociales
+                  </option>
+                  <option value="loyers">Loyers</option>
+                  <option value="FDJ">FDJ</option>
+                  <option value="cadeau">Cadeau</option>
+                  <option value="autres">Autres</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn">Ajouter</button>
+            </form>
+
+            <div class="card totalRevenus">
+              <h3>Revenus totaux</h3>
+              <p id="totalRevenus">0 €</p>
+              <h3>Revenus par catégorie</h3>
+              <ul id="revenusCategories"></ul>
+            </div>
+          </div>
+          <div class="flex_row">
+            <form class="card formDepenses" action="#">
+              <h3>
+                Ajouter un dépenses pour le <span class="selectedMonth"></span>
+              </h3>
+              <div>
+                <label for="montant">Montant :</label>
+                <input
+                  type="number"
+                  id="montantDepenses"
+                  name="montant"
+                  required
+                />
+              </div>
+
+              <div>
+                <label for="categorie">Catégorie :</label>
+                <select id="categorieDepenses" name="categorie" required>
+                  <option value="alimentation">Alimentation</option>
+                  <option value="loisirs">Loisirs</option>
+                  <option value="transports">Transports</option>
+                  <option value="hébergement">Hébergement</option>
+                  <option value="divers">Divers</option>
+                  <option value="autres">Autres</option>
+                </select>
+
+                <button type="submit" class="btn">Ajouter</button>
+              </div>
+            </form>
+            <div class="card totalDepenses">
+              <h3>Dépenses totaux</h3>
+              <p id="totalDepenses">0 €</p>
+              <h3>Dépenses par catégorie</h3>
+              <ul id="depensesCategories"></ul>
+            </div>
+          </div>
+          <div class="total">
+            <div class="card budgetRemaining">
+              <h3>Total restant</h3>
+              <p id="totalBudgetRemaining">0 €</p>
+              <div class="export-buttons" style="margin-top: 20px">
+                <button id="exportCSV" class="btn">📁 Exporter en CSV</button>
+                <button id="exportPDF" class="btn">📄 Exporter en PDF</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>

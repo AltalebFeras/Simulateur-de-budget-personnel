@@ -1,11 +1,20 @@
-
-const monthPicker = document.querySelector('.month_picker');
+const monthPicker = document.querySelector(".month_picker");
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth();
 const currentYear = currentDate.getFullYear();
 const monthNames = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const monthList = [];
@@ -17,9 +26,14 @@ for (let i = -6; i <= 5; i++) {
   const monthName = monthNames[monthIndex];
 
   const className = `${monthName}_${monthYear}`;
-  monthList.push({ name: monthName, year: monthYear, index: monthIndex, className });
+  monthList.push({
+    name: monthName,
+    year: monthYear,
+    index: monthIndex,
+    className,
+  });
 
-  const monthDiv = document.createElement('div');
+  const monthDiv = document.createElement("div");
   monthDiv.classList.add(className);
   monthDiv.innerHTML = `
     <div class="month-card" data-month="${monthIndex}" data-year="${monthYear}">
@@ -28,8 +42,23 @@ for (let i = -6; i <= 5; i++) {
   monthPicker.appendChild(monthDiv);
 
   // Écouteur d'événement
-  monthDiv.addEventListener('click', () => {
-    localStorage.setItem('selectedMonth', JSON.stringify({ month: monthName, year: monthYear }));
-    window.location.href = '/views/budget.html'; // Redirection vers la page de budget
+  monthDiv.addEventListener("click", () => {
+    localStorage.setItem(
+      "selectedMonth",
+      JSON.stringify({ month: monthName, year: monthYear })
+    );
+    window.location.href = "/views/budget.html"; // Redirection vers la page de budget
   });
 }
+let body = document.body;
+let darkMode = localStorage.getItem("darkMode") === "true" ? true : false;
+if (darkMode) {
+  body.classList.add("darkMode");
+}
+let darkModeButton = document.querySelector("#toggleDark");
+
+darkModeButton.addEventListener("click", () => {
+  body.classList.toggle("darkMode");
+  darkMode = body.classList.contains("darkMode");
+  localStorage.setItem("darkMode", darkMode);
+});
