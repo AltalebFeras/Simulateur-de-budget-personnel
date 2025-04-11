@@ -3,38 +3,47 @@ let darkMode = localStorage.getItem("darkMode") === "true" ? true : false;
 if (darkMode) {
   body.classList.add("darkMode");
 }
-let darkModeButton = document.querySelector("#toggleDark");
 
+let darkModeButton = document.querySelector("#toggleDark");
 darkModeButton.addEventListener("click", () => {
   body.classList.toggle("darkMode");
   darkMode = body.classList.contains("darkMode");
   localStorage.setItem("darkMode", darkMode);
 });
 
-//* This function is used to get the current month and year from the local storage.
+// Get selected month and year from localStorage
 let selectedMonth = localStorage.getItem("selectedMonth")
   ? localStorage.getItem("selectedMonth")
   : null;
 if (!selectedMonth) {
   window.location.href = "./../index.html";
 }
-let monthYear = JSON.parse(selectedMonth);
 
+let monthYear = JSON.parse(selectedMonth);
 let month = monthYear.month;
 let year = monthYear.year;
 console.log(month, year);
 
 document.querySelector(".selectedMonth").textContent = month + " " + year;
 
-//calculation revenus
+// Initialize or get data from localStorage
+let monBudget = JSON.parse(localStorage.getItem("monBudget")) || {};
+
+if (!monBudget[year]) monBudget[year] = {};
+if (!monBudget[year][month]) {
+  monBudget[year][month] = {
+    revenus: [],
+    depenses: [],
+    totalRevenus: 0,
+    totalDepenses: 0,
+    budgetRestant: 0
+  };
+}
+
+// Afficher Revenus (Revenue handling)
 const form = document.querySelector(".formRevnus");
 const totalRevenusEl = document.querySelector("#totalRevenus");
 const revenusCategoriesEl = document.querySelector("#revenusCategories");
-
-let revenusData = JSON.parse(localStorage.getItem("revenusData")) || {};
-
-if (!revenusData[year]) revenusData[year] = {};
-if (!revenusData[year][month]) revenusData[year][month] = [];
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -48,7 +57,7 @@ form.addEventListener("submit", (e) => {
   }
 
   if (categorie !== "autres") {
-    const existeDeja = revenusData[year][month].some(
+    const existeDeja = monBudget[year][month].revenus.some(
       (r) => r.categorie === categorie
     );
     if (existeDeja) {
@@ -57,8 +66,9 @@ form.addEventListener("submit", (e) => {
     }
   }
 
-  revenusData[year][month].push({ montant, categorie });
-  localStorage.setItem("revenusData", JSON.stringify(revenusData));
+  monBudget[year][month].revenus.push({ montant, categorie });
+  monBudget[year][month].totalRevenus += montant;
+  localStorage.setItem("monBudget", JSON.stringify(monBudget));
 
   form.reset();
   afficherRevenus();
@@ -66,23 +76,17 @@ form.addEventListener("submit", (e) => {
 });
 
 function afficherRevenus() {
-  const revenus = revenusData[year][month] || [];
-
+  const revenus = monBudget[year][month].revenus;
   let total = 0;
-  const categories = {};
-
   revenusCategoriesEl.innerHTML = "";
 
   revenus.forEach(({ montant, categorie }, index) => {
     total += montant;
-    categories[categorie] = (categories[categorie] || 0) + montant;
-
     const li = document.createElement("li");
     li.innerHTML = `
       ${categorie} : ${montant.toFixed(2)} € 
       <span style="cursor:pointer; color:red; margin-left:10px;" data-index="${index}">❌</span>
     `;
-
     li.querySelector("span").addEventListener("click", () => {
       supprimerRevenu(index);
     });
@@ -95,24 +99,19 @@ function afficherRevenus() {
 
 function supprimerRevenu(index) {
   if (confirm("Voulez-vous vraiment supprimer ce revenu ?")) {
-    revenusData[year][month].splice(index, 1);
-    localStorage.setItem("revenusData", JSON.stringify(revenusData));
+    const montantToRemove = monBudget[year][month].revenus[index].montant;
+    monBudget[year][month].revenus.splice(index, 1);
+    monBudget[year][month].totalRevenus -= montantToRemove;
+    localStorage.setItem("monBudget", JSON.stringify(monBudget));
     afficherRevenus();
     calculerBudgetRestant();
   }
 }
 
-afficherRevenus();
-
-// calculation depenses
+// Afficher Dépenses (Expense handling)
 const formDepenses = document.querySelector(".formDepenses");
 const totalDepensesEl = document.querySelector("#totalDepenses");
 const depensesCategoriesEl = document.querySelector("#depensesCategories");
-
-let depensesData = JSON.parse(localStorage.getItem("depensesData")) || {};
-
-if (!depensesData[year]) depensesData[year] = {};
-if (!depensesData[year][month]) depensesData[year][month] = [];
 
 formDepenses.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -126,7 +125,7 @@ formDepenses.addEventListener("submit", (e) => {
   }
 
   if (categorie !== "autres") {
-    const existeDeja = depensesData[year][month].some(
+    const existeDeja = monBudget[year][month].depenses.some(
       (d) => d.categorie === categorie
     );
     if (existeDeja) {
@@ -135,8 +134,9 @@ formDepenses.addEventListener("submit", (e) => {
     }
   }
 
-  depensesData[year][month].push({ montant, categorie });
-  localStorage.setItem("depensesData", JSON.stringify(depensesData));
+  monBudget[year][month].depenses.push({ montant, categorie });
+  monBudget[year][month].totalDepenses += montant;
+  localStorage.setItem("monBudget", JSON.stringify(monBudget));
 
   formDepenses.reset();
   afficherDepenses();
@@ -144,23 +144,17 @@ formDepenses.addEventListener("submit", (e) => {
 });
 
 function afficherDepenses() {
-  const depenses = depensesData[year][month] || [];
-
+  const depenses = monBudget[year][month].depenses;
   let total = 0;
-  const categories = {};
-
   depensesCategoriesEl.innerHTML = "";
 
   depenses.forEach(({ montant, categorie }, index) => {
     total += montant;
-    categories[categorie] = (categories[categorie] || 0) + montant;
-
     const li = document.createElement("li");
     li.innerHTML = `
       ${categorie} : ${montant.toFixed(2)} € 
       <span style="cursor:pointer; color:red; margin-left:10px;" data-index="${index}">❌</span>
     `;
-
     li.querySelector("span").addEventListener("click", () => {
       supprimerDepense(index);
     });
@@ -173,47 +167,34 @@ function afficherDepenses() {
 
 function supprimerDepense(index) {
   if (confirm("Voulez-vous vraiment supprimer cette dépense ?")) {
-    depensesData[year][month].splice(index, 1);
-    localStorage.setItem("depensesData", JSON.stringify(depensesData));
+    const montantToRemove = monBudget[year][month].depenses[index].montant;
+    monBudget[year][month].depenses.splice(index, 1);
+    monBudget[year][month].totalDepenses -= montantToRemove;
+    localStorage.setItem("monBudget", JSON.stringify(monBudget));
     afficherDepenses();
     calculerBudgetRestant();
   }
 }
 
-afficherDepenses();
-
-// calculation total
+// Calculer Budget Restant (Remaining budget calculation)
 function calculerBudgetRestant() {
-  const revenus = revenusData[year]?.[month] || [];
-  const depenses = depensesData[year]?.[month] || [];
-
-  const totalRevenus = revenus.reduce((sum, r) => sum + r.montant, 0);
-  const totalDepenses = depenses.reduce((sum, d) => sum + d.montant, 0);
+  const totalRevenus = monBudget[year][month].totalRevenus;
+  const totalDepenses = monBudget[year][month].totalDepenses;
 
   const restant = totalRevenus - totalDepenses;
 
-  document.querySelector(
-    "#totalBudgetRemaining"
-  ).textContent = `${restant.toFixed(2)} €`;
-  document.querySelector("#totalBudgetRemaining").style.color =
-    restant >= 0 ? "green" : "red";
+  document.querySelector("#totalBudgetRemaining").textContent = `${restant.toFixed(2)} €`;
+  document.querySelector("#totalBudgetRemaining").style.color = restant >= 0 ? "green" : "red";
 
-  if (!localStorage.getItem("budgetRestant"))
-    localStorage.setItem("budgetRestant", "{}");
+  monBudget[year][month].budgetRestant = restant;
 
-  let storedBudget = JSON.parse(localStorage.getItem("budgetRestant"));
-  if (!storedBudget[year]) storedBudget[year] = {};
-  storedBudget[year][month] = restant;
-
-  localStorage.setItem("budgetRestant", JSON.stringify(storedBudget));
+  localStorage.setItem("monBudget", JSON.stringify(monBudget));
 }
-calculerBudgetRestant();
 
-// csv lib
-
+// CSV Export
 document.querySelector("#exportCSV").addEventListener("click", () => {
-  const revenus = revenusData[year]?.[month] || [];
-  const depenses = depensesData[year]?.[month] || [];
+  const revenus = monBudget[year][month].revenus;
+  const depenses = monBudget[year][month].depenses;
 
   let csv = `Catégorie,Type,Montant (€)\n`;
 
@@ -232,14 +213,13 @@ document.querySelector("#exportCSV").addEventListener("click", () => {
   link.click();
 });
 
-// pdf lib
-
+// PDF Export
 document.querySelector("#exportPDF").addEventListener("click", () => {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  const revenus = revenusData[year]?.[month] || [];
-  const depenses = depensesData[year]?.[month] || [];
+  const revenus = monBudget[year][month].revenus;
+  const depenses = monBudget[year][month].depenses;
 
   let rows = [];
 
@@ -251,12 +231,8 @@ document.querySelector("#exportPDF").addEventListener("click", () => {
     rows.push([categorie, "Dépense", `${montant.toFixed(2)} €`]);
   });
 
-  const totalRevenus = revenus
-    .reduce((sum, r) => sum + r.montant, 0)
-    .toFixed(2);
-  const totalDepenses = depenses
-    .reduce((sum, d) => sum + d.montant, 0)
-    .toFixed(2);
+  const totalRevenus = revenus.reduce((sum, r) => sum + r.montant, 0).toFixed(2);
+  const totalDepenses = depenses.reduce((sum, d) => sum + d.montant, 0).toFixed(2);
   const restant = (totalRevenus - totalDepenses).toFixed(2);
 
   doc.setFontSize(18);
@@ -271,17 +247,14 @@ document.querySelector("#exportPDF").addEventListener("click", () => {
   });
 
   doc.setFontSize(12);
-  doc.text(
-    `Total Revenus : ${totalRevenus} €`,
-    14,
-    doc.lastAutoTable.finalY + 10
-  );
-  doc.text(
-    `Total Dépenses : ${totalDepenses} €`,
-    14,
-    doc.lastAutoTable.finalY + 18
-  );
+  doc.text(`Total Revenus : ${totalRevenus} €`, 14, doc.lastAutoTable.finalY + 10);
+  doc.text(`Total Dépenses : ${totalDepenses} €`, 14, doc.lastAutoTable.finalY + 18);
   doc.text(`Budget Restant : ${restant} €`, 14, doc.lastAutoTable.finalY + 26);
 
   doc.save(`budget_${month}_${year}.pdf`);
 });
+
+// Initial function calls to load data
+afficherRevenus();
+afficherDepenses();
+calculerBudgetRestant();

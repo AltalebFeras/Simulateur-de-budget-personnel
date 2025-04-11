@@ -30,3 +30,9 @@
   font-weight: bold;
   color: #333;
 }
+.month_picker_container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
