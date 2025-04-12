@@ -1,105 +1,88 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mon Budget</title>
-    <link rel="stylesheet" href="./../assets/styles/global.css" />
-    <script src="./../assets/scripts/history.js" defer></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-   
-  </head>
-  <body>
-    <!-- section header -->
-    <header>
-      <nav class="navbar">
-        <div class="logo">
-          <a href="./../index.html"
-            ><img
-              src="./../assets/imgs/logo.png"
-              alt="Logo"
-              width="50"
-              height="50"
-            />
-          </a>
-          <p class="logo_paragraph">MonBudget</p>
-        </div>
-        <ul class="nav-links">
-          <button id="toggleDark" class="btnDark">🌙</button>
-        </ul>
-      </nav>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon Budget</title>
+  <link rel="stylesheet" href="./../assets/styles/global.css" />
+  <link rel="stylesheet" href="./../assets/styles/history.css" />
+  <script src="./../assets/scripts/history.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- section main -->
-    <main>
-      <div class="filtres">
-        <h2>Filtres - Affinez votre recherche</h2>
 
-        <div class="filter-container">
+</head>
+
+<body>
+  <!-- section header -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="./../index.html"><img src="./../assets/imgs/logo.png" alt="Logo" width="50" height="50" />
+        </a>
+        <p class="logo_paragraph">MonBudget</p>
+      </div>
+      <ul class="nav-links">
+        <button id="toggleDark" class="btnDark">🌙</button>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- section main -->
+  <main>
+    <div class="filtres">
+      <h2>Filtres votre recherche</h2>
+      <div class="filtres-container">
+        <div>
+
           <label for="filtreAnnee">Sélectionnez l'année:</label>
           <select id="filtreAnnee" title="Choisissez une année">
             <option value="">-- Toutes les années --</option>
           </select>
         </div>
+        <div>
 
-        <div class="filter-container">
           <label for="filtreMois">Sélectionnez le mois:</label>
           <select id="filtreMois" title="Choisissez un mois">
             <option value="">-- Tous les mois --</option>
           </select>
         </div>
-        
       </div>
 
-      <!-- Cards container -->
-      <div class="history-cards" id="historyCards">
-        <!-- Les cartes filtrées s'afficheront ici -->
-      </div>
-      <canvas id="budgetChart" width="600" height="300"></canvas>
+    </div>
 
-    </main>
+    <!-- Cards container -->
+    <div class="history-cards" id="historyCards">
+      <!-- Les cartes filtrées s'afficheront ici -->
+    </div>
+    <canvas id="budgetChart" width="600" height="300"></canvas>
 
-    <!-- section footer-->
-    <footer>
-      <p>Suivez-nous sur les réseaux sociaux:</p>
-      <ul class="social-media-links">
-        <li>
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            class="lienReseauxSociaux"
-            ><i class="fa-brands fa-facebook"></i
-          ></a>
-        </li>
-        <li>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            class="lienReseauxSociaux"
-            ><i class="fa-brands fa-instagram"></i
-          ></a>
-        </li>
-        <li>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            class="lienReseauxSociaux"
-          >
-            <i class="fa-brands fa-twitter"></i
-          ></a>
-        </li>
-      </ul>
-      <p>&copy; 2025 MonBudget. Tous droits réservés.</p>
-    </footer>
-  </body>
+  </main>
+
+  <!-- section footer-->
+  <footer>
+    <p>Suivez-nous sur les réseaux sociaux:</p>
+    <ul class="social-media-links">
+      <li>
+        <a href="https://facebook.com" target="_blank" class="lienReseauxSociaux"><i
+            class="fa-brands fa-facebook"></i></a>
+      </li>
+      <li>
+        <a href="https://instagram.com" target="_blank" class="lienReseauxSociaux"><i
+            class="fa-brands fa-instagram"></i></a>
+      </li>
+      <li>
+        <a href="https://twitter.com" target="_blank" class="lienReseauxSociaux">
+          <i class="fa-brands fa-twitter"></i></a>
+      </li>
+    </ul>
+    <p>&copy; 2025 MonBudget. Tous droits réservés.</p>
+  </footer>
+</body>
+
 </html>

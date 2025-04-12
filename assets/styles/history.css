@@ -1,0 +1,36 @@
+.filtres {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.filtres select {
+    padding: 8px;
+    margin: 5px 0;
+    width: 200px;
+    font-size: 1em;
+}
+
+.filtres label {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.filtres .filter-container {
+    margin-bottom: 15px;
+}
+
+.filtres-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+label {
+    font-size: 0.9rem;
+    margin: 0px !important;
+}

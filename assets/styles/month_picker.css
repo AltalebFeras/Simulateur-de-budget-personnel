@@ -1,3 +1,26 @@
+.hero-content-month-picker {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: justify;
+}
+
+.btnHistory {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.sectionSimulation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .month_picker {
   display: flex;
   flex-wrap: wrap;
@@ -17,10 +40,10 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  text-align: center;
 }
 
 .month-card:hover {
+  background-color: greenyellow;
   transform: translateY(-5px) scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
@@ -28,8 +51,9 @@
 .month-name {
   font-size: 1rem;
   font-weight: bold;
-  color: #333;
+  color: black;
 }
+
 .month_picker_container {
   display: none;
   flex-direction: column;

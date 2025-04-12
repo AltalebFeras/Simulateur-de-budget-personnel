@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
   afficherHistoriqueFiltre();
 });
 
-
 let budgetChartInstance = null;
 
 function afficherHistoriqueFiltre() {
@@ -99,8 +98,18 @@ function afficherHistoriqueFiltre() {
   }
 
   const moisOrdre = [
-    "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-    "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+    "Janvier",
+    "Février",
+    "Mars",
+    "Avril",
+    "Mai",
+    "Juin",
+    "Juillet",
+    "Août",
+    "Septembre",
+    "Octobre",
+    "Novembre",
+    "Décembre",
   ];
 
   const moisLabels = [];
@@ -123,8 +132,12 @@ function afficherHistoriqueFiltre() {
       summaryCard.innerHTML = `
         <h2>${moisName} ${annee}</h2>
         <p><strong>Total Revenus:</strong> ${data.totalRevenus.toFixed(2)} €</p>
-        <p><strong>Total Dépenses:</strong> ${data.totalDepenses.toFixed(2)} €</p>
-        <p><strong>Budget Restant:</strong> ${(data.totalRevenus - data.totalDepenses).toFixed(2)} €</p>
+        <p><strong>Total Dépenses:</strong> ${data.totalDepenses.toFixed(
+          2
+        )} €</p>
+        <p><strong>Budget Restant:</strong> ${(
+          data.totalRevenus - data.totalDepenses
+        ).toFixed(2)} €</p>
       `;
       historyCards.appendChild(summaryCard);
     }
@@ -142,7 +155,7 @@ function afficherHistoriqueFiltre() {
   }
 
   budgetChartInstance = new Chart(ctx, {
-    type: "bar",  
+    type: "bar",
     data: {
       labels: moisLabels,
       datasets: [
@@ -160,7 +173,7 @@ function afficherHistoriqueFiltre() {
           label: "Budget Restant",
           data: restantData,
           backgroundColor: "rgba(255, 206, 86, 0.6)",
-        }
+        },
       ],
     },
     options: {
@@ -168,14 +181,14 @@ function afficherHistoriqueFiltre() {
       plugins: {
         title: {
           display: true,
-          text: `Résumé Mensuel - ${annee}`
+          text: `Résumé Mensuel - ${annee}`,
         },
       },
       scales: {
         y: {
-          beginAtZero: true
-        }
-      }
-    }
+          beginAtZero: true,
+        },
+      },
+    },
   });
 }

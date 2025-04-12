@@ -1,45 +1,38 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="stylesheet" href="./assets/styles/global.css" />
-    <link rel="stylesheet" href="./assets/styles/month_picker.css" />
-    <script src="./assets/scripts/monthPicker.js" defer></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-  </head>
-  <body>
-    <!-- section header -->
-    <header>
-      <nav class="navbar">
-        <div class="logo">
-          <a href="./index.html"
-            ><img
-              src="./assets/imgs/logo.png"
-              alt="Logo"
-              width="50"
-              height="50"
-            />
-          </a>
-          <p class="logo_paragraph">MonBudget</p>
-        </div>
-        <ul class="nav-links">
-          <button id="toggleDark" class="btnDark">🌙</button>
-        </ul>
-      </nav>
-    </header>
-    <!-- section main -->
-    <main>
-      <div class="container">
-        <div class="hero-content">
-          <h1>Bienvenue sur MonBudget</h1>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <link rel="stylesheet" href="./assets/styles/global.css" />
+  <link rel="stylesheet" href="./assets/styles/month_picker.css" />
+  <script src="./assets/scripts/monthPicker.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <!-- section header -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="./index.html"><img src="./assets/imgs/logo.png" alt="Logo" width="50" height="50" />
+        </a>
+        <p class="logo_paragraph">MonBudget</p>
+      </div>
+      <ul class="nav-links">
+        <button id="toggleDark" class="btnDark">🌙</button>
+      </ul>
+    </nav>
+  </header>
+  <!-- section main -->
+  <main>
+    <div class="container">
+      <div class="hero-content-month-picker">
+        <h1>Bienvenue sur MonBudget</h1>
+        <div class="">
           <p>
             MonBudget est une application conçue pour vous aider à gérer vos
             finances personnelles de manière simple et intuitive. Notre objectif
@@ -53,53 +46,57 @@
             financiers sans stress.
           </p>
         </div>
-
-        <!-- Sélection du mois -->
-        <div>
-          <p>Gérez vos finances facilement et efficacement.</p>
-          <button id="simulateBtnThisMonth" class="btn">Faire une simulation pour ce mois</button>
-          <button id="simulateBtnAnotherMonth" class="btn">Faire une simulation pour un autre mois</button>
-          <a href="/views/history.html" id="seeHistoryBtn" class="btn">Voir l'historique</a>
-
-        </div>
-        <div class="month_picker_container">
-          <h3>Sélectionnez un mois:</h3>
-          <div class="month_picker"></div>
-        </div>
       </div>
-    </main>
 
-    <!-- section footer-->
-    <footer>
-      <p>Suivez-nous sur les réseaux sociaux:</p>
-      <ul class="social-media-links">
-        <li>
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            class="lienReseauxSociaux"
-            ><i class="fa-brands fa-facebook"></i
-          ></a>
-        </li>
-        <li>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            class="lienReseauxSociaux"
-            ><i class="fa-brands fa-instagram"></i
-          ></a>
-        </li>
-        <li>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            class="lienReseauxSociaux"
-          >
-            <i class="fa-brands fa-twitter"></i
-          ></a>
-        </li>
-      </ul>
-      <p>&copy; 2025 MonBudget. Tous droits réservés.</p>
-    </footer>
-  </body>
+      <!-- Sélection du mois -->
+      <div>
+        <div class="btnHistory">
+
+          <a href="/views/history.html" id="seeHistoryBtn" class="btn linkNotDecorated">Voir l'historique</a>
+        </div>
+        <div class="card">
+          <div class="sectionSimulation">
+            <h4>Gérez vos finances facilement et efficacement.</h4>
+            <p>Faire une simulation pour :</p>
+            <div>
+
+              <button id="simulateBtnThisMonth" class="btn">
+                ce mois
+              </button>
+              <button id="simulateBtnAnotherMonth" class="btn">
+                un autre mois
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="month_picker_container">
+        <h3>Sélectionnez un mois:</h3>
+        <div class="month_picker"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- section footer-->
+  <footer>
+    <p>Suivez-nous sur les réseaux sociaux:</p>
+    <ul class="social-media-links">
+      <li>
+        <a href="https://facebook.com" target="_blank" class="lienReseauxSociaux"><i
+            class="fa-brands fa-facebook"></i></a>
+      </li>
+      <li>
+        <a href="https://instagram.com" target="_blank" class="lienReseauxSociaux"><i
+            class="fa-brands fa-instagram"></i></a>
+      </li>
+      <li>
+        <a href="https://twitter.com" target="_blank" class="lienReseauxSociaux">
+          <i class="fa-brands fa-twitter"></i></a>
+      </li>
+    </ul>
+    <p>&copy; 2025 MonBudget. Tous droits réservés.</p>
+  </footer>
+</body>
+
 </html>

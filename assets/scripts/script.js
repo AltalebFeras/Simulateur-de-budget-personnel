@@ -36,7 +36,7 @@ if (!monBudget[year][month]) {
     depenses: [],
     totalRevenus: 0,
     totalDepenses: 0,
-    budgetRestant: 0
+    budgetRestant: 0,
   };
 }
 
@@ -183,8 +183,11 @@ function calculerBudgetRestant() {
 
   const restant = totalRevenus - totalDepenses;
 
-  document.querySelector("#totalBudgetRemaining").textContent = `${restant.toFixed(2)} €`;
-  document.querySelector("#totalBudgetRemaining").style.color = restant >= 0 ? "green" : "red";
+  document.querySelector(
+    "#totalBudgetRemaining"
+  ).textContent = `${restant.toFixed(2)} €`;
+  document.querySelector("#totalBudgetRemaining").style.color =
+    restant >= 0 ? "green" : "red";
 
   monBudget[year][month].budgetRestant = restant;
 
@@ -231,8 +234,12 @@ document.querySelector("#exportPDF").addEventListener("click", () => {
     rows.push([categorie, "Dépense", `${montant.toFixed(2)} €`]);
   });
 
-  const totalRevenus = revenus.reduce((sum, r) => sum + r.montant, 0).toFixed(2);
-  const totalDepenses = depenses.reduce((sum, d) => sum + d.montant, 0).toFixed(2);
+  const totalRevenus = revenus
+    .reduce((sum, r) => sum + r.montant, 0)
+    .toFixed(2);
+  const totalDepenses = depenses
+    .reduce((sum, d) => sum + d.montant, 0)
+    .toFixed(2);
   const restant = (totalRevenus - totalDepenses).toFixed(2);
 
   doc.setFontSize(18);
@@ -247,8 +254,16 @@ document.querySelector("#exportPDF").addEventListener("click", () => {
   });
 
   doc.setFontSize(12);
-  doc.text(`Total Revenus : ${totalRevenus} €`, 14, doc.lastAutoTable.finalY + 10);
-  doc.text(`Total Dépenses : ${totalDepenses} €`, 14, doc.lastAutoTable.finalY + 18);
+  doc.text(
+    `Total Revenus : ${totalRevenus} €`,
+    14,
+    doc.lastAutoTable.finalY + 10
+  );
+  doc.text(
+    `Total Dépenses : ${totalDepenses} €`,
+    14,
+    doc.lastAutoTable.finalY + 18
+  );
   doc.text(`Budget Restant : ${restant} €`, 14, doc.lastAutoTable.finalY + 26);
 
   doc.save(`budget_${month}_${year}.pdf`);
