@@ -34,3 +34,10 @@ label {
     font-size: 0.9rem;
     margin: 0px !important;
 }
+.no-data-message {
+    text-align: center;
+    margin-top: 2rem;
+    color: blueviolet;
+    font-style: italic;
+  }
+  

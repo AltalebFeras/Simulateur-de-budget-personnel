@@ -1,14 +1,13 @@
+let budgetChartInstance = null;
+
 function initialiserFiltres() {
   const monBudgetData = JSON.parse(localStorage.getItem("monBudget")) || {};
 
   const anneeSelect = document.querySelector("#filtreAnnee");
   const moisSelect = document.querySelector("#filtreMois");
 
-  // Clear existing options
-  anneeSelect.innerHTML = `<option value="">-- Toutes les années --</option>`;
   moisSelect.innerHTML = `<option value="">-- Tous les mois --</option>`;
 
-  // Populate years dynamically
   const annees = Object.keys(monBudgetData);
   annees.forEach((annee) => {
     const opt = document.createElement("option");
@@ -17,7 +16,13 @@ function initialiserFiltres() {
     anneeSelect.appendChild(opt);
   });
 
-  // Populate months (static list)
+  const currentYear = new Date().getFullYear().toString();
+  if (annees.includes(currentYear)) {
+    anneeSelect.value = currentYear;
+  } else if (annees.length > 0) {
+    anneeSelect.value = annees[0];
+  }
+
   const mois = [
     "Janvier",
     "Février",
@@ -42,50 +47,6 @@ function initialiserFiltres() {
 
 function afficherHistoriqueFiltre() {
   const monBudgetData = JSON.parse(localStorage.getItem("monBudget")) || {};
-
-  const annee = document.querySelector("#filtreAnnee").value;
-  const mois = document.querySelector("#filtreMois").value;
-
-  const historyCards = document.querySelector("#historyCards");
-  historyCards.innerHTML = "";
-
-  for (const an of Object.keys(monBudgetData)) {
-    if (annee && an !== annee) continue;
-
-    for (const mo of Object.keys(monBudgetData[an])) {
-      if (mois && mo !== mois) continue;
-
-      const data = monBudgetData[an][mo];
-      const totalRevenus = data.totalRevenus || 0;
-      const totalDepenses = data.totalDepenses || 0;
-      const budgetRestant = data.budgetRestant || totalRevenus - totalDepenses;
-
-      // Create summary card only
-      const summaryCard = document.createElement("div");
-      summaryCard.classList.add("card", "summary-card");
-      summaryCard.innerHTML = `
-          <h2>${mo} ${an}</h2>
-          <p><strong>Total Revenus:</strong> ${totalRevenus.toFixed(2)} €</p>
-          <p><strong>Total Dépenses:</strong> ${totalDepenses.toFixed(2)} €</p>
-          <p><strong>Budget Restant:</strong> ${budgetRestant.toFixed(2)} €</p>
-        `;
-      historyCards.appendChild(summaryCard);
-    }
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  initialiserFiltres();
-  document
-    .querySelectorAll("#filtreAnnee, #filtreMois")
-    .forEach((el) => el.addEventListener("change", afficherHistoriqueFiltre));
-  afficherHistoriqueFiltre();
-});
-
-let budgetChartInstance = null;
-
-function afficherHistoriqueFiltre() {
-  const monBudgetData = JSON.parse(localStorage.getItem("monBudget")) || {};
   const annee = document.querySelector("#filtreAnnee").value;
   const mois = document.querySelector("#filtreMois").value;
 
@@ -93,7 +54,11 @@ function afficherHistoriqueFiltre() {
   historyCards.innerHTML = "";
 
   if (!annee || !monBudgetData[annee]) {
-    console.log("No data found for the selected year:", annee);
+    const message = document.createElement("p");
+    message.textContent = "Il n'y a pas de données à afficher.";
+    message.classList.add("no-data-message");
+    historyCards.appendChild(message);
+    if (budgetChartInstance) budgetChartInstance.destroy();
     return;
   }
 
@@ -117,8 +82,8 @@ function afficherHistoriqueFiltre() {
   const depensesData = [];
   const restantData = [];
 
-  // Loop through each month for the selected year
   moisOrdre.forEach((moisName) => {
+    if (mois && mois !== moisName) return;
     const data = monBudgetData[annee][moisName];
 
     if (data) {
@@ -129,22 +94,30 @@ function afficherHistoriqueFiltre() {
 
       const summaryCard = document.createElement("div");
       summaryCard.classList.add("card", "summary-card");
+      const budgetRestant = (data.totalRevenus - data.totalDepenses).toFixed(2);
+      const budgetRestantColor = budgetRestant >= 0 ? "green" : "red";
+
       summaryCard.innerHTML = `
         <h2>${moisName} ${annee}</h2>
-        <p><strong>Total Revenus:</strong> ${data.totalRevenus.toFixed(2)} €</p>
-        <p><strong>Total Dépenses:</strong> ${data.totalDepenses.toFixed(
+        <p><strong>Total Revenus:</strong> <span style="color: blue;">${data.totalRevenus.toFixed(
           2
-        )} €</p>
-        <p><strong>Budget Restant:</strong> ${(
-          data.totalRevenus - data.totalDepenses
-        ).toFixed(2)} €</p>
+        )} €</span></p>
+        <p><strong>Total Dépenses:</strong> <span style="color: orange;">${data.totalDepenses.toFixed(
+          2
+        )} €</span></p>
+        <p><strong>Budget Restant:</strong> <span style="color: ${budgetRestantColor};">${budgetRestant} €</span></p>
       `;
+
       historyCards.appendChild(summaryCard);
     }
   });
 
   if (moisLabels.length === 0) {
-    console.log("No valid month data found for the selected year.");
+    const message = document.createElement("p");
+    message.textContent = "Il n'y a pas de données à afficher.";
+    message.classList.add("no-data-message");
+    historyCards.appendChild(message);
+    if (budgetChartInstance) budgetChartInstance.destroy();
     return;
   }
 
@@ -154,6 +127,8 @@ function afficherHistoriqueFiltre() {
     budgetChartInstance.destroy();
   }
 
+  const restantColors = restantData.map((val) => (val >= 0 ? "green" : "red"));
+
   budgetChartInstance = new Chart(ctx, {
     type: "bar",
     data: {
@@ -162,17 +137,17 @@ function afficherHistoriqueFiltre() {
         {
           label: "Revenus",
           data: revenusData,
-          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          backgroundColor: "blue",
         },
         {
           label: "Dépenses",
           data: depensesData,
-          backgroundColor: "rgba(255, 99, 132, 0.6)",
+          backgroundColor: "orange",
         },
         {
           label: "Budget Restant",
           data: restantData,
-          backgroundColor: "rgba(255, 206, 86, 0.6)",
+          backgroundColor: restantColors,
         },
       ],
     },
@@ -192,3 +167,11 @@ function afficherHistoriqueFiltre() {
     },
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  initialiserFiltres();
+  document
+    .querySelectorAll("#filtreAnnee, #filtreMois")
+    .forEach((el) => el.addEventListener("change", afficherHistoriqueFiltre));
+  afficherHistoriqueFiltre();
+});
