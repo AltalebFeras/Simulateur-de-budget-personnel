@@ -23,6 +23,14 @@ body {
 .darkMode {
     background-color: black;
     color: white;
+
+    .card {
+        background-color: black;
+    }
+
+    .fa-circle-arrow-left {
+        color: white;
+    }
 }
 
 main {
@@ -298,7 +306,6 @@ footer {
 
 .card h3 {
     margin: 0;
-    font-size: 1.2em;
 }
 
 .card p {

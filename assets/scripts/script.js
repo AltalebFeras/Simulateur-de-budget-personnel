@@ -1,16 +1,3 @@
-let body = document.body;
-let darkMode = localStorage.getItem("darkMode") === "true" ? true : false;
-if (darkMode) {
-  body.classList.add("darkMode");
-}
-
-let darkModeButton = document.querySelector("#toggleDark");
-darkModeButton.addEventListener("click", () => {
-  body.classList.toggle("darkMode");
-  darkMode = body.classList.contains("darkMode");
-  localStorage.setItem("darkMode", darkMode);
-});
-
 // Get selected month and year from localStorage
 let selectedMonth = localStorage.getItem("selectedMonth")
   ? localStorage.getItem("selectedMonth")
@@ -24,7 +11,8 @@ let month = monthYear.month;
 let year = monthYear.year;
 console.log(month, year);
 
-document.querySelector(".selectedMonth").textContent = month + " " + year;
+document.querySelector(".selectedMonth1").textContent = month + " " + year;
+document.querySelector(".selectedMonth2").textContent = month + " " + year;
 
 // Initialize or get data from localStorage
 let monBudget = JSON.parse(localStorage.getItem("monBudget")) || {};
